@@ -1,3 +1,17 @@
+# How to build
+
+```sh
+rm -rf build/ dist/ *.egg-info/
+python setup.py bdist_wheel
+```
+
+# How to use
+
+```sh
+pip install ../EasyOCR/dist/easyocr_digit-0.0.1-py3-none-any.whl
+```
+
+
 # EasyOCR
 
 [![PyPI Status](https://badge.fury.io/py/easyocr.svg)](https://badge.fury.io/py/easyocr)
