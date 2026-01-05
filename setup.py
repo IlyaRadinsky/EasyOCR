@@ -16,7 +16,7 @@ setup(
     name='easyocr-digit',
     packages=['easyocr'],
     include_package_data=True,
-    version='0.0.1',
+    version='0.0.2',
     install_requires=requirements,
     entry_points={"console_scripts": ["easyocr= easyocr.cli:main"]},
     license='Apache License 2.0',

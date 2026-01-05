@@ -5,7 +5,5 @@ scipy
 scikit-image==0.26.0
 numpy
 Pillow
-python-bidi
 PyYAML
 pyclipper
-ninja

@@ -6,7 +6,6 @@ from .utils import group_text_box, get_image_list, calculate_md5, get_paragraph,
                    make_rotated_img_list, set_result_with_confidence,\
                    reformat_input_batched, merge_to_free
 from .config import *
-from bidi import get_display
 import numpy as np
 import cv2
 import torch
@@ -397,13 +396,7 @@ class Reader(object):
                 result = set_result_with_confidence(
                     [result[image_len*i:image_len*(i+1)] for i in range(len(rotation_info) + 1)])
 
-        if self.model_lang == 'arabic':
-            direction_mode = 'rtl'
-            result = [list(item) for item in result]
-            for item in result:
-                item[1] = get_display(item[1])
-        else:
-            direction_mode = 'ltr'
+        direction_mode = 'ltr'
 
         if paragraph:
             result = get_paragraph(result, x_ths=x_ths, y_ths=y_ths, mode = direction_mode)
