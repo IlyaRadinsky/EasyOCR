@@ -24,7 +24,7 @@ class DBNet:
                  weight_name = 'pretrained',
                  initialize_model = True,
                  dynamic_import_relative_path = None,
-                 device = 'cuda', 
+                 device = 'cpu', 
                  verbose = 0):
         '''
         DBNet text detector class

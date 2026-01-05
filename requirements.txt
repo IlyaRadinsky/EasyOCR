@@ -1,12 +1,11 @@
-torch
-torchvision>=0.5
+torch==2.9.1
+torchvision==0.24.1
 opencv-python-headless
 scipy
+scikit-image==0.26.0
 numpy
 Pillow
-scikit-image
 python-bidi
 PyYAML
-Shapely
 pyclipper
 ninja

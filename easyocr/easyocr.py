@@ -65,21 +65,7 @@ class Reader(object):
         Path(self.user_network_directory).mkdir(parents=True, exist_ok=True)
         sys.path.append(self.user_network_directory)
 
-        if gpu is False:
-            self.device = 'cpu'
-            if verbose:
-                LOGGER.warning('Using CPU. Note: This module is much faster with a GPU.')
-        elif gpu is True:
-            if torch.cuda.is_available():
-                self.device = 'cuda'
-            elif torch.backends.mps.is_available():
-                self.device = 'mps'
-            else:
-                self.device = 'cpu'
-                if verbose:
-                    LOGGER.warning('Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.')
-        else:
-            self.device = gpu
+        self.device = 'cpu'
 
         self.detection_models = detection_models
         self.recognition_models = recognition_models

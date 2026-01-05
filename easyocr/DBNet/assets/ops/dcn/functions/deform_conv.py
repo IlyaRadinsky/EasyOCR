@@ -46,33 +46,6 @@ except:
             ]))
         dcn_cpu_ready = False
 
-if torch.cuda.is_available():
-    try:
-        from .. import deform_conv_cuda
-        warnings.warn("Using precompiled deform_conv_cuda from {}".format(deform_conv_cuda.__file__))
-        dcn_cuda_ready = True
-    except:
-        try:
-            warnings.warn("Compiling deform_conv_cuda ...")
-            warnings.warn("(This may take a while if this module is loaded for the first time.)")
-            cuda_sources = [os.path.join(dcn_dir, 'src', src_file) 
-                           for src_file in ["deform_conv_cuda.cpp",
-                                            "deform_conv_cuda_kernel.cu"]
-                           ]
-            deform_conv_cuda = cpp_extension.load(
-                                name="deform_conv_cuda", 
-                                sources=[os.path.join(dcn_dir, 'src', "deform_conv_cuda.cpp"),
-                                         os.path.join(dcn_dir, 'src', "deform_conv_cuda_kernel.cu")])
-            warnings.warn("Done.")
-            dcn_cuda_ready = True
-        except Exception as error:
-            warnings.warn(' '.join([
-                "Failed to import or compile 'deform_conv_cuda' with the following error",
-                "{}".format(error),
-                "Deformable convulution and DBNet will not be able to run on GPU."
-                ]))
-            dcn_cuda_ready = False
-
 class DeformConvFunction(Function):
     
     @staticmethod
@@ -108,15 +81,8 @@ class DeformConvFunction(Function):
         cur_im2col_step = min(ctx.im2col_step, input.shape[0])
         assert (input.shape[0] %
                 cur_im2col_step) == 0, 'im2col step must divide batchsize'
-        if not input.is_cuda and dcn_cpu_ready:
+        if dcn_cpu_ready:
             deform_conv_cpu.deform_conv_forward_cpu(
-                input, weight, offset, output, ctx.bufs_[0], ctx.bufs_[1],
-                weight.size(3), weight.size(2), ctx.stride[1], ctx.stride[0],
-                ctx.padding[1], ctx.padding[0], ctx.dilation[1],
-                ctx.dilation[0], ctx.groups, ctx.deformable_groups,
-                cur_im2col_step)
-        elif input.is_cuda and dcn_cuda_ready:
-            deform_conv_cuda.deform_conv_forward_cuda(
                 input, weight, offset, output, ctx.bufs_[0], ctx.bufs_[1],
                 weight.size(3), weight.size(2), ctx.stride[1], ctx.stride[0],
                 ctx.padding[1], ctx.padding[0], ctx.dilation[1],

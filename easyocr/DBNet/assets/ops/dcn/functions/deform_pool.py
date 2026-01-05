@@ -45,29 +45,6 @@ except:
             ]))
         dcn_cpu_ready = False
 
-if torch.cuda.is_available():
-    try:
-        from .. import deform_pool_cuda
-        warnings.warn("Using precompiled deform_pool_cuda from {}".format(deform_pool_cuda.__file__))
-        dcn_cuda_ready = True
-    except:
-        try:
-            warnings.warn("Compiling deform_pool_cuda ...")
-            warnings.warn("(This may take a while if this module is loaded for the first time.)")
-            deform_pool_cuda = cpp_extension.load(
-                                name="deform_pool_cuda", 
-                                sources=[os.path.join(dcn_dir, 'src', "deform_pool_cuda.cpp"),
-                                         os.path.join(dcn_dir, 'src', "deform_pool_cuda_kernel.cu")])
-            warnings.warn("Done.")
-            dcn_cuda_ready = True
-        except Exception as error:
-            warnings.warn(' '.join([
-                "Failed to import or compile 'deform_pool_cuda' with the following error",
-                "{}".format(error),
-                "Deformable convulution and DBNet will not be able to run on GPU."
-                ]))
-            dcn_cuda_ready = False
-
 class DeformRoIPoolingFunction(Function):
 
     @staticmethod

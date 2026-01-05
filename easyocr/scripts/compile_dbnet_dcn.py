@@ -41,13 +41,7 @@ def validate_compilation(parent_dir, log_path, cpu_or_cuda):
         pool_cpu_exist = glob.glob(os.path.join(dcn_dir, 'deform_pool_cpu.*.so'))
         success_message = "DCN CPU operator is compiled successfully at {}.".format(os.path.abspath(os.path.join(parent_dir,'DBNet')))
         print_success(success_message, log_path)
-        return conv_cpu_exist and pool_cpu_exist  
-    elif cpu_or_cuda == 'cuda':
-        conv_cuda_exist = glob.glob(os.path.join(dcn_dir, 'deform_conv_cuda.*.so'))
-        pool_cuda_exist = glob.glob(os.path.join(dcn_dir, 'deform_pool_cuda.*.so'))
-        success_message = "DCN CUDA operator is compiled successfully at {}.".format(os.path.abspath(os.path.join(parent_dir,'DBNet')))
-        print_success(success_message, log_path)
-        return conv_cuda_exist and pool_cuda_exist
+        return conv_cpu_exist and pool_cpu_exist
     else:
         raise ValueError("'cpu_or_cuda' must be either 'cpu' or 'cuda'")
             
